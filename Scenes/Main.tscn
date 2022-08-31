@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/BoardPiece.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/board.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/BoardManager.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=4]
+
+[node name="Main" type="Node2D"]
+
+[node name="Board" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="01" parent="Board" instance=ExtResource( 1 )]
+position = Vector2( 274, 119 )
+script = ExtResource( 4 )
+
+[node name="Board" type="Sprite" parent="Board"]
+position = Vector2( 470, 301 )
+texture = ExtResource( 2 )
