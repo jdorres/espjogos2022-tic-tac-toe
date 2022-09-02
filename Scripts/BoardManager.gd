@@ -7,6 +7,10 @@ var board_nodes;
 var current_player;
 var game_ended;
 
+
+#NEW
+#var ai_player_node
+
 func _ready():
 	print("ready")
 	
