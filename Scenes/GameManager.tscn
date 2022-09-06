@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/PlayerIA.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=2]
+[ext_resource path="res://Sprites/board.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/cross.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/circle.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/BoardPiece.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scripts/BoardManager.gd" type="Script" id=7]
+
+[node name="GameManager" type="Node2D"]
+
+[node name="BoardManager" type="Node2D" parent="."]
+script = ExtResource( 7 )
+
+[node name="0-0" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 274, 119 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="0-1" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 467, 116 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="0-2" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 655, 118 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="1-0" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 274, 300 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="1-1" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 463, 300 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="1-2" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 656, 300 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="2-0" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 275, 487 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="2-1" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 464, 486 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="2-2" parent="BoardManager" instance=ExtResource( 6 )]
+position = Vector2( 653, 488 )
+script = ExtResource( 2 )
+player_textures = [ null, ExtResource( 4 ), ExtResource( 5 ) ]
+
+[node name="Board" type="Sprite" parent="BoardManager"]
+position = Vector2( 470, 301 )
+texture = ExtResource( 3 )
+
+[node name="PlayerIA" type="Node2D" parent="BoardManager"]
+script = ExtResource( 1 )
