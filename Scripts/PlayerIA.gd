@@ -19,25 +19,49 @@ func play_mini_max(board_nodes, board_size_lines, board_size_columns):
 	var free_spaces  = free_spaces(board_nodes, board_size_lines, board_size_columns)
 	var bestScore = -999
 	var bestMove = null
-	var board_nodes_copy =  board_nodes.duplicate()
-	
+
 	for free_space in free_spaces:
-		board_nodes_copy[free_space[0]][free_space[1]].set_player(2)
+		board_nodes[free_space[0]][free_space[1]].set_player(2)
 		var score = minimax(board_nodes, board_size_lines, board_size_columns, free_spaces, false)
+		board_nodes[free_space[0]][free_space[1]].set_player(0)
+		
 		if(score > bestScore):
 			bestScore = score
 			bestMove = board_nodes[free_space[0]][free_space[1]]
+		
 	bestMove.set_player(2)
 
 func minimax(board_nodes, board_size_lines, board_size_columns, free_spaces, isMaximazing):
 	var winning_player = check_winner(board_nodes, board_size_lines, board_size_columns)
-	if(winning_player != 0):
-		return winning_player
-		
+	if winning_player == 1 :
+		return -1;
+	elif winning_player == 2 :
+		return 1;
+	elif winning_player == 3 :
+		return 0;
+	
 	if(isMaximazing):
-		return 1		
+		var bestScore = -999
+		var i = free_spaces(board_nodes, board_size_lines, board_size_columns)
+		for free_space in i:
+			board_nodes[free_space[0]][free_space[1]].set_player(2)
+			var score = minimax(board_nodes, board_size_lines, board_size_columns, i, false)
+			board_nodes[free_space[0]][free_space[1]].set_player(0)
+
+			if(score > bestScore):
+				bestScore = score
+		return bestScore
 	else:
-		return 1
+		var bestScore = 999
+		var i = free_spaces(board_nodes, board_size_lines, board_size_columns)
+		for free_space in i:
+			board_nodes[free_space[0]][free_space[1]].set_player(1)
+			var score = minimax(board_nodes, board_size_lines, board_size_columns, i, true)
+			board_nodes[free_space[0]][free_space[1]].set_player(0)
+
+			if(score < bestScore):
+				bestScore = score
+		return bestScore
 
 func free_spaces(board_nodes, board_size_lines, board_size_columns):
 	var free_spaces = []
@@ -107,3 +131,4 @@ func check_diagonal(board_nodes, board_size_lines, board_size_columns, diagonal,
 			return false;
 			
 	return true;
+

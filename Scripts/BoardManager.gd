@@ -33,11 +33,6 @@ func reset_game():
 			board_nodes[line][column].set_player(0);
 
 func node_clicked(line, column, field_value):
-	print("node_clicked")
-	
-	#TODO: verificar se o jogo terminou
-	#check_winner()
-	
 	#verifica se a casa já não está ocupada
 	if(field_value != 0):
 		print("Este campo já foi selecionado. Tente outro.")
@@ -77,7 +72,6 @@ func make_move(line, column, player):
 			current_player = 1
 
 func ia_plays():
-	print('ia plays')
 	player_ia.plays(board_nodes, board_size_lines, board_size_columns)
 	current_player = 1
 
