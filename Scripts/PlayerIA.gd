@@ -1,20 +1,30 @@
 extends Node2D
 
-func _ready():
-	pass # Replace with function body.
+func plays(board_nodes, board_size_lines, board_size_columns, game_mode):
+	match game_mode:
+		'easy':
+			if (randi() % 9) < 6:
+				print('easy - random')
+				play_random_position(board_nodes, board_size_lines, board_size_columns)
+			else:
+				print('easy - minimax')
+				play_mini_max(board_nodes, board_size_lines, board_size_columns)
+		'medium':
+			if (randi() % 9) < 4:
+				print('medium - minimax')
+				play_random_position(board_nodes, board_size_lines, board_size_columns)
+			else:
+				print('medium - minimax')
+				play_mini_max(board_nodes, board_size_lines, board_size_columns)
+		_:
+			print('hard - minimax')			
+			play_mini_max(board_nodes, board_size_lines, board_size_columns)
 
-
-func plays(board_nodes, board_size_lines, board_size_columns):
-	#play_first_free_position(board_nodes, board_size_lines, board_size_columns)
-	play_mini_max(board_nodes, board_size_lines, board_size_columns)
+func play_random_position(board_nodes, board_size_lines, board_size_columns):
+	var free_spaces  = free_spaces(board_nodes, board_size_lines, board_size_columns)
+	var rand_pos = free_spaces[(randi() % free_spaces.size())]
+	board_nodes[rand_pos[0]][rand_pos[1]].set_player(2)
 	
-func play_first_free_position(board_nodes, board_size_lines, board_size_columns):
-	for line in range(board_size_lines):
-		for column in range(board_size_columns):
-			if(board_nodes[line][column].get_player() == 0):
-				board_nodes[line][column].set_player(2)
-				return
-
 func play_mini_max(board_nodes, board_size_lines, board_size_columns):
 	var free_spaces  = free_spaces(board_nodes, board_size_lines, board_size_columns)
 	var bestScore = -999
@@ -103,13 +113,13 @@ func check_winner(board_nodes, board_size_lines, board_size_columns):
 		
 	# Senão, o jogo ainda não terminou.
 	return 0;
-	
+
 func check_line(board_nodes, board_size_lines, board_size_columns, line, player):
 	for column in range(board_size_columns):
 		if(board_nodes[line][column].get_player() != player):
 			return false;
 	return true;
-	
+
 func check_column(board_nodes, board_size_lines, board_size_columns, column, player):
 	for line in range(board_size_lines):
 		if(board_nodes[line][column].get_player() != player):
@@ -131,4 +141,3 @@ func check_diagonal(board_nodes, board_size_lines, board_size_columns, diagonal,
 			return false;
 			
 	return true;
-

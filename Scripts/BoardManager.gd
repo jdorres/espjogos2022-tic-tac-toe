@@ -7,12 +7,10 @@ var board_nodes
 var current_player
 var game_ended
 var player_ia
+var game_mode #multi/easy/medium/hard
 
-#NEW
-#var ai_player_node
-
-#ao iniciar: carrega o jogo
-func _ready():
+func start_game(mode):
+	game_mode = mode
 	player_ia = get_node("PlayerIA")
 	#preenche as posições
 	board_nodes = []
@@ -33,11 +31,11 @@ func reset_game():
 			board_nodes[line][column].set_player(0);
 
 func node_clicked(line, column, field_value):
-	#verifica se a casa já não está ocupada
-	if(field_value != 0):
-		print("Este campo já foi selecionado. Tente outro.")
-		return
-	make_move(line, column, current_player)
+	if !game_ended:
+		if(field_value != 0):
+			print("Este campo já foi selecionado. Tente outro.")
+		else:
+			make_move(line, column, current_player)
 
 func make_move(line, column, player):
 	board_nodes[line][column].set_player(player)
@@ -55,24 +53,25 @@ func make_move(line, column, player):
 
 	if(current_player == 1):
 		current_player = 2
-		ia_plays()
 		
-		#TODO: corrigir repetição de código
-		# Verifica se o jogo terminou
-		winning_player = check_winner();
-		if(winning_player == 3):
-			game_ended = true;
-			print("Deu Velha!")
-			return
-		if(winning_player > 0 and winning_player < 3):
-			game_ended = true
-			print("Jogador %d venceu!" % winning_player)
-			return
-		else:
-			current_player = 1
+		if game_mode != 'multi':
+			ia_plays()
+			#TODO: corrigir repetição de código
+			# Verifica se o jogo terminou
+			winning_player = check_winner();
+			if(winning_player == 3):
+				game_ended = true;
+				print("Deu Velha!")
+				return
+			if(winning_player > 0 and winning_player < 3):
+				game_ended = true
+				print("Jogador %d venceu!" % winning_player)
+				return
+			else:
+				current_player = 1
 
 func ia_plays():
-	player_ia.plays(board_nodes, board_size_lines, board_size_columns)
+	player_ia.plays(board_nodes, board_size_lines, board_size_columns, game_mode)
 	current_player = 1
 
 
@@ -110,20 +109,17 @@ func check_winner():
 	return 0;
 	
 	
-# Verifica se uma linha inteira está marcada como um certo player
 func check_line(line, player):
 	for column in range(board_size_columns):
 		if(board_nodes[line][column].get_player() != player):
 			return false;
 	return true;
 	
-# Verifica se uma coluna inteira está marcada como um certo player
 func check_column(column, player):
 	for line in range(board_size_lines):
 		if(board_nodes[line][column].get_player() != player):
 			return false;
 	return true;
-
 
 func check_diagonal(diagonal, player):
 	# Percorre as linhas
