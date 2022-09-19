@@ -42,3 +42,8 @@ func _on_HardButton_pressed():
 	sub_menu.visible = false
 	board_manager.visible = true
 	board_manager.start_game("hard")
+
+
+func _on_MainMenuButton_pressed():
+	main_menu.visible = true
+	board_manager.visible = false
