@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/PlayerIA.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=2]
@@ -18,9 +18,21 @@
 [ext_resource path="res://Audio/player_selects__gameaudio__click-basic.wav" type="AudioStream" id=16]
 [ext_resource path="res://Audio/game_ends2_456966__funwithsound__success-fanfare-trumpets.mp3" type="AudioStream" id=17]
 [ext_resource path="res://Audio/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav" type="AudioStream" id=18]
+[ext_resource path="res://Sprites/background-1280.jpg" type="Texture" id=19]
+[ext_resource path="res://Scripts/ParallaxBackground.gd" type="Script" id=20]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource( 8 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource( 20 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1000, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 531, 294 )
+texture = ExtResource( 19 )
 
 [node name="BoardManager" type="Node2D" parent="."]
 visible = false
@@ -160,25 +172,25 @@ text = "SUPER JOGO DA VELHA"
 
 [node name="SinglePlayerButton" type="Button" parent="MainMenu"]
 margin_left = 377.0
-margin_top = 159.0
+margin_top = 184.0
 margin_right = 603.0
-margin_bottom = 179.0
+margin_bottom = 204.0
 theme = ExtResource( 10 )
 text = "Jogador Unico"
 
 [node name="MultiplayerButton" type="Button" parent="MainMenu"]
 margin_left = 379.0
-margin_top = 191.0
+margin_top = 216.0
 margin_right = 605.0
-margin_bottom = 211.0
+margin_bottom = 236.0
 theme = ExtResource( 10 )
 text = "Dois Jogadores"
 
 [node name="QuitButton" type="Button" parent="MainMenu"]
 margin_left = 379.0
-margin_top = 221.0
+margin_top = 246.0
 margin_right = 605.0
-margin_bottom = 241.0
+margin_bottom = 266.0
 theme = ExtResource( 10 )
 text = "Sair"
 
