@@ -4,20 +4,15 @@ func plays(board_nodes, board_size_lines, board_size_columns, game_mode):
 	match game_mode:
 		'easy':
 			if (randi() % 9) < 6:
-				print('easy - random')
 				play_random_position(board_nodes, board_size_lines, board_size_columns)
 			else:
-				print('easy - minimax')
 				play_mini_max(board_nodes, board_size_lines, board_size_columns)
 		'medium':
 			if (randi() % 9) < 4:
-				print('medium - minimax')
 				play_random_position(board_nodes, board_size_lines, board_size_columns)
 			else:
-				print('medium - minimax')
 				play_mini_max(board_nodes, board_size_lines, board_size_columns)
 		_:
-			print('hard - minimax')			
 			play_mini_max(board_nodes, board_size_lines, board_size_columns)
 
 func play_random_position(board_nodes, board_size_lines, board_size_columns):

@@ -10,6 +10,11 @@ var player_ia
 var status_label
 var game_end_label
 var game_end_message
+var sound_click_player
+var sound_click_ia
+var sound_click_error
+var sound_game_ends
+var sound_game_ends_lose
 var game_mode #multi/easy/medium/hard
 var ia_is_playing = false
 
@@ -17,9 +22,14 @@ func start_game(mode):
 	game_mode = mode
 	player_ia = get_node("PlayerIA")
 	status_label = get_node("StatusLabel")
-	game_end_label = get_node("GameEndLabel")
+	game_end_label = get_node("GameEndPanel")
 	game_end_label.visible = false
-	game_end_message = get_node("GameEndLabel/GameEndMessage")
+	game_end_message = get_node("GameEndPanel/GameEndMessage")
+	sound_click_player = get_node("GameSoundPlayer/SoundPlayerSelect")
+	sound_click_ia = get_node("GameSoundPlayer/SoundIASelect")
+	sound_click_error = get_node("GameSoundPlayer/SoundError")
+	sound_game_ends = get_node("GameSoundPlayer/SoundGameEnds")
+	sound_game_ends_lose = get_node("GameSoundPlayer/SoundGameEndsLose")
 
 	board_nodes = []
 	for line in range(board_size_lines):
@@ -37,12 +47,20 @@ func reset_game():
 	for line in range(board_size_lines):
 		for column in range(board_size_columns):
 			board_nodes[line][column].set_player(0);
+	
+	#randomiza quem começa jogando mas se rodar  minimax na primeira rodada trava
+#	if(game_mode != 'multi'):
+#		current_player = (randi() % 2+1)
+#		if(current_player == 2):
+#			ia_plays()
 
 func node_clicked(line, column, field_value):
 	if !game_ended:
 		if(field_value != 0):
-			shows_message('Campo invalido')
+			sound_click_error.play()			
+			shows_message('Campo ocupado!')
 		else:
+			sound_click_player.play()
 			make_move(line, column, current_player)
 
 func make_move(line, column, player):
@@ -63,7 +81,6 @@ func make_move(line, column, player):
 		shows_game_result(2)
 		return
 		
-		
 	if(current_player == 1):
 		current_player = 2
 		if game_mode != 'multi':
@@ -83,23 +100,27 @@ func shows_game_result(result):
 			if game_mode == 'multi':
 				game_end_message.text = 'Player 1 X venceu! Parabens!'
 			else:
-				game_end_message.text = 'Voce ganhou, parabens!'				
+				game_end_message.text = 'Voce ganhou, parabens!'
+			sound_game_ends.play()				
 		2:
 			if game_mode == 'multi':
 				game_end_message.text = 'Player 2 O venceu! Parabens!'
+				sound_game_ends.play()
 			else:
-				game_end_message.text = 'Voce perdeu.' 
+				game_end_message.text = 'Voce perdeu.'
+				sound_game_ends_lose.play()
 		3:
 			game_end_message.text = 'Deu velha!'
+			sound_game_ends_lose.play()
 	
 	game_end_label.visible = true
-	
-	
+
 func ia_plays():
 	ia_is_playing = true
 	status_label.text = 'Pensando...'
-	yield(get_tree().create_timer(1), "timeout")
+	yield(get_tree().create_timer(0.7), "timeout")
 	player_ia.plays(board_nodes, board_size_lines, board_size_columns, game_mode)
+	sound_click_ia.play()
 	ia_is_playing = false
 	status_label.text = ''
 	current_player = 1
@@ -121,7 +142,6 @@ func ia_plays():
 		return
 	else:
 		current_player = 1
-
 
 func check_winner():
 	# Checa vitória para cada player
@@ -184,7 +204,6 @@ func check_diagonal(diagonal, player):
 			return false;
 			
 	return true;
-
 
 func _on_RestartGameButton_pressed():
 	reset_game()

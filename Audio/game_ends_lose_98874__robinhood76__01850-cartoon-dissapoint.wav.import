@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav-355c4cc85959c2f9f371799e57ad73ae.sample"
+
+[deps]
+
+source_file="res://Audio/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav"
+dest_files=[ "res://.import/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav-355c4cc85959c2f9f371799e57ad73ae.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/PlayerIA.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=2]
@@ -11,6 +11,13 @@
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=9]
 [ext_resource path="res://Sprites/gameboy_theme.tres" type="Theme" id=10]
 [ext_resource path="res://Sprites/gameboyfont.tres" type="DynamicFont" id=11]
+[ext_resource path="res://Audio/menu_nav__basic-click-wooden.wav" type="AudioStream" id=12]
+[ext_resource path="res://Audio/menu_click__gameaudio__boot-sound.wav" type="AudioStream" id=13]
+[ext_resource path="res://Audio/game_error__gameaudio__click-casual.wav" type="AudioStream" id=14]
+[ext_resource path="res://Audio/ia_selects__gameaudio__click-wooden-1.wav" type="AudioStream" id=15]
+[ext_resource path="res://Audio/player_selects__gameaudio__click-basic.wav" type="AudioStream" id=16]
+[ext_resource path="res://Audio/game_ends2_456966__funwithsound__success-fanfare-trumpets.mp3" type="AudioStream" id=17]
+[ext_resource path="res://Audio/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav" type="AudioStream" id=18]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource( 8 )
@@ -82,13 +89,13 @@ margin_right = 954.0
 margin_bottom = 317.0
 custom_fonts/font = ExtResource( 11 )
 
-[node name="GameEndLabel" type="Panel" parent="BoardManager"]
+[node name="GameEndPanel" type="Panel" parent="BoardManager"]
 margin_left = 77.0
 margin_top = 70.0
 margin_right = 943.0
 margin_bottom = 428.0
 
-[node name="GameEndMessage" type="Label" parent="BoardManager/GameEndLabel"]
+[node name="GameEndMessage" type="Label" parent="BoardManager/GameEndPanel"]
 margin_left = 55.0
 margin_top = 86.0
 margin_right = 784.0
@@ -97,7 +104,7 @@ theme = ExtResource( 10 )
 text = "Voce venceu!"
 align = 1
 
-[node name="RestartGameButton" type="Button" parent="BoardManager/GameEndLabel"]
+[node name="RestartGameButton" type="Button" parent="BoardManager/GameEndPanel"]
 margin_left = 286.0
 margin_top = 214.0
 margin_right = 553.0
@@ -105,13 +112,30 @@ margin_bottom = 249.0
 theme = ExtResource( 10 )
 text = "Jogar novamente"
 
-[node name="MainMenuButton" type="Button" parent="BoardManager/GameEndLabel"]
+[node name="MainMenuButton" type="Button" parent="BoardManager/GameEndPanel"]
 margin_left = 289.0
 margin_top = 252.0
 margin_right = 556.0
 margin_bottom = 287.0
 theme = ExtResource( 10 )
 text = "Voltar ao Menu"
+
+[node name="GameSoundPlayer" type="Node" parent="BoardManager"]
+
+[node name="SoundError" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
+stream = ExtResource( 14 )
+
+[node name="SoundPlayerSelect" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
+stream = ExtResource( 16 )
+
+[node name="SoundIASelect" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
+stream = ExtResource( 15 )
+
+[node name="SoundGameEnds" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
+stream = ExtResource( 17 )
+
+[node name="SoundGameEndsLose" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
+stream = ExtResource( 18 )
 
 [node name="MainMenu" type="Control" parent="."]
 anchor_left = 0.5
@@ -124,35 +148,6 @@ margin_right = 1024.0
 margin_bottom = 601.0
 script = ExtResource( 9 )
 
-[node name="Menu1" type="VBoxContainer" parent="MainMenu"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -112.0
-margin_top = -241.0
-margin_right = 114.0
-
-[node name="SinglePlayerButton" type="Button" parent="MainMenu/Menu1"]
-margin_right = 226.0
-margin_bottom = 20.0
-theme = ExtResource( 10 )
-text = "Jogador Unico"
-
-[node name="MultiplayerButton" type="Button" parent="MainMenu/Menu1"]
-margin_top = 24.0
-margin_right = 226.0
-margin_bottom = 44.0
-theme = ExtResource( 10 )
-text = "Dois Jogadores"
-
-[node name="QuitButton" type="Button" parent="MainMenu/Menu1"]
-margin_top = 48.0
-margin_right = 226.0
-margin_bottom = 68.0
-theme = ExtResource( 10 )
-text = "Sair"
-
 [node name="Title" type="Label" parent="MainMenu"]
 anchor_left = 0.5
 anchor_right = 0.5
@@ -162,6 +157,30 @@ margin_right = 285.5
 margin_bottom = 99.0
 theme = ExtResource( 10 )
 text = "SUPER JOGO DA VELHA"
+
+[node name="SinglePlayerButton" type="Button" parent="MainMenu"]
+margin_left = 377.0
+margin_top = 159.0
+margin_right = 603.0
+margin_bottom = 179.0
+theme = ExtResource( 10 )
+text = "Jogador Unico"
+
+[node name="MultiplayerButton" type="Button" parent="MainMenu"]
+margin_left = 379.0
+margin_top = 191.0
+margin_right = 605.0
+margin_bottom = 211.0
+theme = ExtResource( 10 )
+text = "Dois Jogadores"
+
+[node name="QuitButton" type="Button" parent="MainMenu"]
+margin_left = 379.0
+margin_top = 221.0
+margin_right = 605.0
+margin_bottom = 241.0
+theme = ExtResource( 10 )
+text = "Sair"
 
 [node name="SubMenu" type="Control" parent="."]
 visible = false
@@ -212,11 +231,30 @@ margin_bottom = 116.0
 theme = ExtResource( 10 )
 text = "Dificil"
 
-[connection signal="pressed" from="BoardManager/GameEndLabel/RestartGameButton" to="BoardManager" method="_on_RestartGameButton_pressed"]
-[connection signal="pressed" from="BoardManager/GameEndLabel/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
-[connection signal="pressed" from="MainMenu/Menu1/SinglePlayerButton" to="." method="_on_SinglePlayerButton_pressed"]
-[connection signal="pressed" from="MainMenu/Menu1/MultiplayerButton" to="." method="_on_MultiplayerButton_pressed"]
-[connection signal="pressed" from="MainMenu/Menu1/QuitButton" to="." method="_on_QuitButton_pressed"]
+[node name="ButtonSoundPlayer" type="Node" parent="."]
+
+[node name="SoundMenuHover" type="AudioStreamPlayer" parent="ButtonSoundPlayer"]
+stream = ExtResource( 12 )
+
+[node name="SoundMenuClick" type="AudioStreamPlayer" parent="ButtonSoundPlayer"]
+stream = ExtResource( 13 )
+
+[connection signal="mouse_entered" from="BoardManager/GameEndPanel/RestartGameButton" to="." method="_on_RestartGameButton_mouse_entered"]
+[connection signal="pressed" from="BoardManager/GameEndPanel/RestartGameButton" to="." method="_on_RestartGameButton_pressed"]
+[connection signal="pressed" from="BoardManager/GameEndPanel/RestartGameButton" to="BoardManager" method="_on_RestartGameButton_pressed"]
+[connection signal="mouse_entered" from="BoardManager/GameEndPanel/MainMenuButton" to="." method="_on_MainMenuButton_mouse_entered"]
+[connection signal="pressed" from="BoardManager/GameEndPanel/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="mouse_entered" from="MainMenu/SinglePlayerButton" to="." method="_on_SinglePlayerButton_mouse_entered"]
+[connection signal="pressed" from="MainMenu/SinglePlayerButton" to="." method="_on_SinglePlayerButton_pressed"]
+[connection signal="mouse_entered" from="MainMenu/MultiplayerButton" to="." method="_on_MultiplayerButton_mouse_entered"]
+[connection signal="pressed" from="MainMenu/MultiplayerButton" to="." method="_on_MultiplayerButton_pressed"]
+[connection signal="mouse_entered" from="MainMenu/QuitButton" to="." method="_on_QuitButton_mouse_entered"]
+[connection signal="pressed" from="MainMenu/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="mouse_entered" from="SubMenu/Menu/LabelDIfficulty" to="." method="_on_LabelDIfficulty_mouse_entered"]
+[connection signal="mouse_entered" from="SubMenu/Menu/LabelEmpty" to="." method="_on_LabelEmpty_mouse_entered"]
+[connection signal="mouse_entered" from="SubMenu/Menu/EasyButton" to="." method="_on_EasyButton_mouse_entered"]
 [connection signal="pressed" from="SubMenu/Menu/EasyButton" to="." method="_on_EasyButton_pressed"]
+[connection signal="mouse_entered" from="SubMenu/Menu/MediumButton" to="." method="_on_MediumButton_mouse_entered"]
 [connection signal="pressed" from="SubMenu/Menu/MediumButton" to="." method="_on_MediumButton_pressed"]
+[connection signal="mouse_entered" from="SubMenu/Menu/HardButton" to="." method="_on_HardButton_mouse_entered"]
 [connection signal="pressed" from="SubMenu/Menu/HardButton" to="." method="_on_HardButton_pressed"]
