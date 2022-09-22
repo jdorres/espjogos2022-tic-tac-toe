@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/in_game_song_2_music_zapsplat_game_music_action_dark_electro_lo_fi_dirty_025.mp3-cd2f65f646c1a423fea3f152625cdf27.mp3str"
+
+[deps]
+
+source_file="res://Audio/in_game_song_2_music_zapsplat_game_music_action_dark_electro_lo_fi_dirty_025.mp3"
+dest_files=[ "res://.import/in_game_song_2_music_zapsplat_game_music_action_dark_electro_lo_fi_dirty_025.mp3-cd2f65f646c1a423fea3f152625cdf27.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

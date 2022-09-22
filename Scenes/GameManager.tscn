@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scripts/PlayerIA.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=2]
@@ -20,6 +20,8 @@
 [ext_resource path="res://Audio/game_ends_lose_98874__robinhood76__01850-cartoon-dissapoint.wav" type="AudioStream" id=18]
 [ext_resource path="res://Sprites/background-1280.jpg" type="Texture" id=19]
 [ext_resource path="res://Scripts/ParallaxBackground.gd" type="Script" id=20]
+[ext_resource path="res://Audio/in_game_song_2_music_zapsplat_game_music_action_dark_electro_lo_fi_dirty_025.mp3" type="AudioStream" id=21]
+[ext_resource path="res://Audio/menu_song_music_zapsplat_space_trivia.mp3" type="AudioStream" id=22]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource( 8 )
@@ -145,9 +147,11 @@ stream = ExtResource( 15 )
 
 [node name="SoundGameEnds" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
 stream = ExtResource( 17 )
+volume_db = -10.0
 
 [node name="SoundGameEndsLose" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
 stream = ExtResource( 18 )
+volume_db = -10.0
 
 [node name="MainMenu" type="Control" parent="."]
 anchor_left = 0.5
@@ -243,14 +247,24 @@ margin_bottom = 116.0
 theme = ExtResource( 10 )
 text = "Dificil"
 
-[node name="ButtonSoundPlayer" type="Node" parent="."]
+[node name="MainMenuSoundPlayer" type="Node" parent="."]
 
-[node name="SoundMenuHover" type="AudioStreamPlayer" parent="ButtonSoundPlayer"]
+[node name="SoundMenuHover" type="AudioStreamPlayer" parent="MainMenuSoundPlayer"]
 stream = ExtResource( 12 )
 
-[node name="SoundMenuClick" type="AudioStreamPlayer" parent="ButtonSoundPlayer"]
+[node name="SoundMenuClick" type="AudioStreamPlayer" parent="MainMenuSoundPlayer"]
 stream = ExtResource( 13 )
 
+[node name="SoundMenuMusic" type="AudioStreamPlayer" parent="MainMenuSoundPlayer"]
+stream = ExtResource( 22 )
+volume_db = -10.0
+
+[node name="SoundGameMusic" type="AudioStreamPlayer" parent="MainMenuSoundPlayer"]
+stream = ExtResource( 21 )
+volume_db = -10.0
+
+[connection signal="game_ended" from="BoardManager" to="." method="_on_BoardManager_game_ended"]
+[connection signal="game_started" from="BoardManager" to="." method="_on_BoardManager_game_started"]
 [connection signal="mouse_entered" from="BoardManager/GameEndPanel/RestartGameButton" to="." method="_on_RestartGameButton_mouse_entered"]
 [connection signal="pressed" from="BoardManager/GameEndPanel/RestartGameButton" to="." method="_on_RestartGameButton_pressed"]
 [connection signal="pressed" from="BoardManager/GameEndPanel/RestartGameButton" to="BoardManager" method="_on_RestartGameButton_pressed"]

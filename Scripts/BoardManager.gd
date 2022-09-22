@@ -18,6 +18,10 @@ var sound_game_ends_lose
 var game_mode #multi/easy/medium/hard
 var ia_is_playing = false
 
+signal game_started
+signal game_ended
+
+
 func start_game(mode):
 	game_mode = mode
 	player_ia = get_node("PlayerIA")
@@ -25,6 +29,7 @@ func start_game(mode):
 	game_end_label = get_node("GameEndPanel")
 	game_end_label.visible = false
 	game_end_message = get_node("GameEndPanel/GameEndMessage")
+	
 	sound_click_player = get_node("GameSoundPlayer/SoundPlayerSelect")
 	sound_click_ia = get_node("GameSoundPlayer/SoundIASelect")
 	sound_click_error = get_node("GameSoundPlayer/SoundError")
@@ -47,6 +52,7 @@ func reset_game():
 	for line in range(board_size_lines):
 		for column in range(board_size_columns):
 			board_nodes[line][column].set_player(0);
+	emit_signal("game_started")
 	
 	#randomiza quem começa jogando mas se rodar  minimax na primeira rodada trava
 #	if(game_mode != 'multi'):
@@ -57,7 +63,7 @@ func reset_game():
 func node_clicked(line, column, field_value):
 	if !game_ended:
 		if(field_value != 0):
-			sound_click_error.play()			
+			sound_click_error.play()
 			shows_message('Campo ocupado!')
 		else:
 			sound_click_player.play()
@@ -67,7 +73,7 @@ func make_move(line, column, player):
 	board_nodes[line][column].set_player(player)
 	
 	# Verifica se o jogo terminou
-	var winning_player = check_winner()
+	var winning_player = check_winner(board_nodes, board_size_lines, board_size_columns)
 	if(winning_player == 3):
 		game_ended = true;
 		shows_game_result(3)
@@ -95,13 +101,14 @@ func shows_message(message):
 
 func shows_game_result(result):
 	yield(get_tree().create_timer(0.8), "timeout")
+	emit_signal("game_ended")
 	match result:
 		1:
 			if game_mode == 'multi':
 				game_end_message.text = 'Player 1 X venceu! Parabens!'
 			else:
 				game_end_message.text = 'Voce ganhou, parabens!'
-			sound_game_ends.play()				
+			sound_game_ends.play()
 		2:
 			if game_mode == 'multi':
 				game_end_message.text = 'Player 2 O venceu! Parabens!'
@@ -127,7 +134,7 @@ func ia_plays():
 	
 	#TODO: corrigir repetição de código
 	# Verifica se o jogo terminou
-	var winning_player = check_winner()
+	var winning_player = check_winner(board_nodes, board_size_lines, board_size_columns)
 	if(winning_player == 3):
 		game_ended = true;
 		shows_game_result(3)
@@ -143,53 +150,63 @@ func ia_plays():
 	else:
 		current_player = 1
 
-func check_winner():
+func check_winner(board_nodes, board_size_lines, board_size_columns):
 	# Checa vitória para cada player
 	for player in [1, 2]:
 		# Verifica linhas
 		for line in range(board_size_lines):
-			if(check_line(line, player)):
+			if(check_line(board_nodes, board_size_lines, board_size_columns, line, player)):
 				return player;
 		
 		# Verifica colunas
 		for column in range(board_size_columns):
-			if(check_column(column, player)):
+			if(check_column(board_nodes, board_size_lines, board_size_columns, column, player)):
 				return player;
 				
 		# Verifica diagonais
 		for diagonal in [0, 2]:
-			if(check_diagonal(diagonal, player)):
+			if(check_diagonal(board_nodes, board_size_lines, board_size_columns, diagonal, player)):
 				return player;
-	
-	print('nenhum jogador ganhou ainda')
-	# Até aqui, nenhum jogador ganhou.
-	# Checa se todas as posições estão ocupadas
+
 	var empty_positions = 0;
 	for line in range(board_size_lines):
 		for column in range(board_size_columns):
 			if(board_nodes[line][column].get_player() == 0):
 				empty_positions += 1;
 				
-	# Se todas estão ocupapdas, deu velha!
 	if(empty_positions == 0):
 		return 3;
-		
-	# Senão, o jogo ainda não terminou.
+
 	return 0;
 
-func check_line(line, player):
+func check_line(board_nodes, board_size_lines, board_size_columns, line, player):
 	for column in range(board_size_columns):
 		if(board_nodes[line][column].get_player() != player):
 			return false;
 	return true;
 
-func check_column(column, player):
+func check_column(board_nodes, board_size_lines, board_size_columns, column, player):
 	for line in range(board_size_lines):
 		if(board_nodes[line][column].get_player() != player):
 			return false;
 	return true;
 
-func check_diagonal(diagonal, player):
+func check_diagonal(board_nodes, board_size_lines, board_size_columns, diagonal, player):
+	# Percorre as linhas
+	for line in range(board_size_lines):
+		var column;
+		if(diagonal == 0):
+			# Diagonal principal
+			column = line;
+		else:
+			# Diagonal secundária, inverte a coluna
+			column = board_size_columns - line - 1;
+			
+		if(board_nodes[line][column].get_player() != player):
+			return false;
+			
+	return true;
+
 	# Percorre as linhas
 	for line in range(board_size_lines):
 		var column;
