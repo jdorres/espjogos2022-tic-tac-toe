@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scripts/PlayerIA.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/BoardPiece.gd" type="Script" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://Scripts/ParallaxBackground.gd" type="Script" id=20]
 [ext_resource path="res://Audio/in_game_song_2_music_zapsplat_game_music_action_dark_electro_lo_fi_dirty_025.mp3" type="AudioStream" id=21]
 [ext_resource path="res://Audio/menu_song_music_zapsplat_space_trivia.mp3" type="AudioStream" id=22]
+[ext_resource path="res://Scripts/GameSoundPlayer.gd" type="Script" id=23]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource( 8 )
@@ -135,6 +136,7 @@ theme = ExtResource( 10 )
 text = "Voltar ao Menu"
 
 [node name="GameSoundPlayer" type="Node" parent="BoardManager"]
+script = ExtResource( 23 )
 
 [node name="SoundError" type="AudioStreamPlayer" parent="BoardManager/GameSoundPlayer"]
 stream = ExtResource( 14 )
