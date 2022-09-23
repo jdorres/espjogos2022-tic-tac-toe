@@ -3,6 +3,7 @@ extends Node2D
 var board_manager
 var main_menu
 var sub_menu
+var credits_menu
 var sound_menu_hover
 var sound_menu_click
 var sound_menu_music
@@ -12,6 +13,7 @@ func _ready():
 	board_manager = get_node("BoardManager")
 	main_menu = get_node("MainMenu")
 	sub_menu = get_node("SubMenu")
+	credits_menu = get_node("CreditsMenu")
 	sound_menu_hover = get_node('MainMenuSoundPlayer/SoundMenuHover')
 	sound_menu_click = get_node('MainMenuSoundPlayer/SoundMenuClick')
 	sound_menu_music = get_node('MainMenuSoundPlayer/SoundMenuMusic')
@@ -77,7 +79,15 @@ func _on_MainMenuButton_pressed():
 	main_menu.visible = true
 	board_manager.visible = false
 	playMenuClickSound()
-	playMenuSong()	
+	playMenuSong()
+	
+func _on_CreditsButton_pressed():
+	main_menu.visible = false
+	credits_menu.visible = true
+	
+func _on_Button_pressed():
+	credits_menu.visible = false
+	main_menu.visible = true
 
 func _on_SinglePlayerButton_mouse_entered():
 	playMenuHoverSound()
